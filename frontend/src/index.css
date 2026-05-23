@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: #0d0a14;
+  color: #f5f2fa;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism Styling */
+.glass-card {
+  background: rgba(22, 18, 36, 0.45);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card-hover:hover {
+  transform: translateY(-2px);
+  border-color: rgba(217, 130, 181, 0.2);
+  background: rgba(22, 18, 36, 0.6);
+  box-shadow: 0 12px 30px rgba(138, 72, 111, 0.08);
+}
+
+/* Accent Glows */
+.glow-accent {
+  filter: blur(80px);
+  opacity: 0.12;
+  background: radial-gradient(circle, #8a486f 0%, transparent 70%);
+}
+
+.glow-accent-secondary {
+  filter: blur(80px);
+  opacity: 0.1;
+  background: radial-gradient(circle, #5f5a7c 0%, transparent 70%);
+}
+
+/* Shimmer Animation */
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Utility Animations */
+.animate-glow-slow {
+  animation: pulse-glow 8s infinite alternate;
+}
+
+@keyframes pulse-glow {
+  0% {
+    opacity: 0.08;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0.15;
+    transform: scale(1.1);
+  }
+}

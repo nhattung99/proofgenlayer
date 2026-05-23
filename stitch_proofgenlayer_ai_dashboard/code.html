@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ProofGenLayer | AI Credibility Analysis</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#6f3157",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface-container-high": "#e8e7f1",
+                        "tertiary-fixed-dim": "#cec4ca",
+                        "on-secondary-fixed": "#1b1735",
+                        "on-primary": "#ffffff",
+                        "surface-variant": "#e3e1ec",
+                        "inverse-surface": "#2f3038",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-low": "#f4f2fd",
+                        "background": "#fbf8ff",
+                        "on-tertiary-fixed-variant": "#4b454a",
+                        "on-primary-container": "#78395f",
+                        "on-background": "#1a1b22",
+                        "inverse-primary": "#ffaeda",
+                        "on-error-container": "#93000a",
+                        "tertiary": "#635c61",
+                        "secondary-fixed-dim": "#c8c2e9",
+                        "surface-tint": "#8a486f",
+                        "primary": "#8a486f",
+                        "secondary-container": "#dcd5fd",
+                        "surface-dim": "#dad9e3",
+                        "surface-container-highest": "#e3e1ec",
+                        "tertiary-fixed": "#eae0e6",
+                        "inverse-on-surface": "#f1effa",
+                        "tertiary-container": "#c8bec4",
+                        "on-surface": "#1a1b22",
+                        "on-surface-variant": "#514349",
+                        "surface": "#fbf8ff",
+                        "primary-fixed-dim": "#ffaeda",
+                        "on-tertiary-container": "#534d51",
+                        "outline-variant": "#d5c1c9",
+                        "primary-fixed": "#ffd8ea",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#474363",
+                        "primary-container": "#f9a8d4",
+                        "error": "#ba1a1a",
+                        "surface-bright": "#fbf8ff",
+                        "secondary-fixed": "#e5deff",
+                        "on-primary-fixed": "#3a0329",
+                        "on-tertiary-fixed": "#1f1a1e",
+                        "secondary": "#5f5a7c",
+                        "surface-container": "#eeedf7",
+                        "outline": "#83737a",
+                        "on-secondary-container": "#605b7d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px",
+                        "container-max": "1280px",
+                        "unit": "8px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                        "headline-xl": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.04em", "fontWeight": "600"}],
+                        "headline-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .glow-accent {
+            filter: blur(80px);
+            opacity: 0.15;
+            background: radial-gradient(circle, #8a486f 0%, transparent 70%);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden selection:bg-primary/20">
+<!-- Ambient Glow Layers -->
+<div class="fixed -top-40 -right-40 w-[600px] h-[600px] glow-accent pointer-events-none"></div>
+<div class="fixed -bottom-40 -left-40 w-[600px] h-[600px] glow-accent pointer-events-none" style="background: radial-gradient(circle, #dcd5fd 0%, transparent 70%);"></div>
+<!-- TopAppBar -->
+<header class="bg-surface/70 backdrop-blur-3xl border-b border-white/10 fixed top-0 w-full z-50 shadow-[0_8px_32px_0_rgba(138,72,111,0.05)]">
+<div class="flex justify-between items-center h-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="security">security</span>
+<h1 class="font-headline-md text-headline-md font-bold tracking-tight text-primary">ProofGenLayer</h1>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-primary font-bold transition-colors duration-300" href="#">Analysis</a>
+<a class="text-on-surface-variant/70 hover:text-primary transition-colors duration-300" href="#">Validators</a>
+<a class="text-on-surface-variant/70 hover:text-primary transition-colors duration-300" href="#">Ecosystem</a>
+<button class="bg-primary text-white px-6 py-2.5 rounded-full font-label-md hover:opacity-90 transition-opacity shadow-lg shadow-primary/20">Connect Wallet</button>
+</nav>
+<button class="md:hidden text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+</div>
+</header>
+<main class="pt-32 pb-40 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto relative z-10">
+<!-- Profile Header Section -->
+<section class="mb-12">
+<div class="flex flex-col md:flex-row items-start md:items-end justify-between gap-6">
+<div class="flex items-center gap-6">
+<div class="relative">
+<div class="w-24 h-24 md:w-32 md:h-32 rounded-xl overflow-hidden glass-card p-1">
+<img class="w-full h-full object-cover rounded-lg" data-alt="A professional close-up portrait of a tech visionary with a confident expression, set against a blurred, high-end office background. The lighting is soft and ethereal, mimicking the light-mode UI aesthetic of ProofGenLayer with hints of lavender and pink highlights. The style is ultra-polished, clean, and representative of a credible leader in AI infrastructure." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqSXMwJsm-x5huaSFjBvfGHDIfBfmZAuaUxkBOHAuhlRuE_ZrJsmtIXMDq1RxeExtOgJhgfTVGSH75FvVFeqanzxsj6j07r3iDiBmRoYE_4SZsfg5Yzy7drKpNy4oHczDS8ltHhnL2o_wWsF5P-O5FSaddvbhKTzIbTdUn_scHx07_OsxIDG0P_pLRu0QWNopxf2KF71TC8Tss9YbG4kSoYde4h1iSMvbrhmLrF2ABj4eXBOzRGThGfSLB8aS2IdsE-Z4XSVrnsiI4"/>
+</div>
+<div class="absolute -bottom-2 -right-2 bg-primary-container text-on-primary-container p-1 rounded-lg border-2 border-white">
+<span class="material-symbols-outlined text-sm" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<div>
+<div class="flex items-center gap-3 mb-1">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Alex Rivera</h2>
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-label-sm font-label-sm uppercase tracking-wider">Top Tier</span>
+</div>
+<p class="text-on-surface-variant font-body-lg text-body-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="fingerprint">fingerprint</span>
+                            PGL-ID: 8842-X-9921
+                        </p>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="glass-card px-6 py-3 rounded-full font-label-md flex items-center gap-2 text-on-surface-variant hover:border-primary/40 transition-all">
+<span class="material-symbols-outlined" data-icon="share">share</span> Share Report
+                    </button>
+<button class="bg-primary text-on-primary px-8 py-3 rounded-full font-label-md shadow-xl shadow-primary/25 hover:scale-105 active:scale-95 transition-all">
+                        Export Proof PDF
+                    </button>
+</div>
+</div>
+</section>
+<!-- Bento Grid Analysis Dashboard -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Trust Score Card -->
+<div class="md:col-span-4 glass-card p-8 rounded-lg flex flex-col items-center justify-center text-center relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-tr from-primary/5 to-transparent"></div>
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest mb-6">Credibility Score</h3>
+<div class="relative w-48 h-48 mb-6">
+<svg class="w-full h-full -rotate-90" viewbox="0 0 100 100">
+<circle class="text-surface-container-high" cx="50" cy="50" fill="transparent" r="42" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary transition-all duration-1000 ease-out" cx="50" cy="50" fill="transparent" r="42" stroke="currentColor" stroke-dasharray="263.89" stroke-dashoffset="21" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-headline-xl text-headline-xl text-on-surface">92</span>
+<span class="text-on-surface-variant font-label-md">EXCELLENT</span>
+</div>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant/80 px-4">Based on 142 AI-verified parameters across 4 networks.</p>
+</div>
+<!-- Scam Probability & Risk -->
+<div class="md:col-span-8 glass-card p-8 rounded-lg">
+<div class="flex items-center justify-between mb-8">
+<h3 class="font-headline-md text-headline-md text-on-surface">Risk Analysis</h3>
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span class="font-label-md text-label-md">REAL-TIME DATA</span>
+</div>
+</div>
+<div class="space-y-10">
+<div>
+<div class="flex justify-between mb-3">
+<span class="font-label-md text-on-surface">Scam Probability</span>
+<span class="font-label-md text-primary">1.2% (Negligible)</span>
+</div>
+<div class="w-full h-4 bg-surface-container-high rounded-full overflow-hidden p-0.5">
+<div class="h-full bg-primary rounded-full transition-all duration-700" style="width: 1.2%"></div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-surface-container-low p-5 rounded-lg border border-white/40">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-green-500" data-icon="gpp_good">gpp_good</span>
+<span class="font-label-md text-on-surface">Sybil Resistance</span>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface">High</span>
+</div>
+<div class="bg-surface-container-low p-5 rounded-lg border border-white/40">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-green-500" data-icon="security">security</span>
+<span class="font-label-md text-on-surface">ID Collision</span>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface">None</span>
+</div>
+<div class="bg-surface-container-low p-5 rounded-lg border border-white/40">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary" data-icon="history_edu">history_edu</span>
+<span class="font-label-md text-on-surface">History Age</span>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface">4.2 yrs</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Expertise Breakdown -->
+<div class="md:col-span-7 glass-card p-8 rounded-lg">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6">Expertise Breakdown</h3>
+<div class="space-y-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="code">code</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between mb-1">
+<span class="font-label-md text-on-surface">Solidity / Smart Contracts</span>
+<span class="text-on-surface-variant text-label-sm">Top 0.5%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 95%"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="token">token</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between mb-1">
+<span class="font-label-md text-on-surface">Tokenomics Engineering</span>
+<span class="text-on-surface-variant text-label-sm">Top 2%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 88%"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-on-tertiary-container/10 rounded-full flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between mb-1">
+<span class="font-label-md text-on-surface">AI Model Training</span>
+<span class="text-on-surface-variant text-label-sm">Top 15%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-tertiary rounded-full" style="width: 72%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Verification History -->
+<div class="md:col-span-5 glass-card p-8 rounded-lg relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-[80px]" data-icon="history">history</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6">Network Activity</h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-4 bg-white/40 rounded-xl">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+<span class="font-label-md text-on-surface">Ethereum Mainnet</span>
+</div>
+<span class="text-on-surface-variant text-label-sm">Verified 2m ago</span>
+</div>
+<div class="flex items-center justify-between p-4 bg-white/40 rounded-xl">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-green-500"></div>
+<span class="font-label-md text-on-surface">Solana Chain</span>
+</div>
+<span class="text-on-surface-variant text-label-sm">Verified 1h ago</span>
+</div>
+<div class="flex items-center justify-between p-4 bg-white/40 rounded-xl">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="font-label-md text-on-surface">ProofGen L2</span>
+</div>
+<span class="text-on-surface-variant text-label-sm">Syncing...</span>
+</div>
+<div class="flex items-center justify-between p-4 bg-white/40 rounded-xl">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-green-500"></div>
+<span class="font-label-md text-on-surface">GitHub (Social)</span>
+</div>
+<span class="text-on-surface-variant text-label-sm">Verified 1d ago</span>
+</div>
+</div>
+</div>
+<!-- Deep Neural Graph (Visual Highlight) -->
+<div class="md:col-span-12 glass-card p-1 rounded-lg overflow-hidden h-[400px] relative group">
+<div class="absolute inset-0 z-0 overflow-hidden">
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(138,72,111,0.05)_0%,_transparent_70%)]"></div>
+<img class="w-full h-full object-cover opacity-30 mix-blend-multiply group-hover:scale-105 transition-transform duration-[5s]" data-alt="A futuristic and abstract digital visualization of a neural network or a high-density data graph. The image features thin, glowing lines of lavender and soft pink intersecting at luminous data points across a deep, ethereal light-grey background. It conveys complexity, intelligence, and high-tech infrastructure with a serene, professional atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0DGYdpxR3ZHbJb5KAE4OiapVZHFYXr8Fr_aXZ_cAANAuyaZlKgmWQUYnUowyH1xHB0wKjIkMqJxTk1c0P1sLX0zLWjMDOHUHbDCB00PqrMqptkJinQBIpM0vK7IJrdiI4rzLr_yy6LDmU-B9Gr3yNH3nzXsZAU0g1Xk8-qgOrMKyj82-dOQanEGCv-Dy_EGOgJ7nhulPE7ZNUCo7C0fK7IZqgJC6b_GmUPzTKrxHXkdY0BjN4BcbZx4txjsQ5K7hbdgqvLCSNBCPy"/>
+</div>
+<div class="absolute inset-0 z-10 flex flex-col justify-end p-12 bg-gradient-to-t from-white/90 to-transparent">
+<div class="flex items-end justify-between">
+<div>
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-label-sm font-label-md mb-4 inline-block">Neural Analysis</span>
+<h3 class="font-headline-lg text-headline-lg text-on-surface max-w-xl">Deep Learning Credibility Verification</h3>
+<p class="text-body-lg text-on-surface-variant mt-2">Aggregating behavior patterns across 10,000+ data nodes to ensure identity integrity.</p>
+</div>
+<button class="w-16 h-16 rounded-full bg-white flex items-center justify-center text-primary shadow-xl hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl" data-icon="fullscreen">fullscreen</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low border-t border-outline-variant/30 w-full py-20 relative z-10">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div>
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="security">security</span>
+<span class="font-headline-md text-headline-md font-bold text-primary">ProofGenLayer</span>
+</div>
+<p class="text-on-surface-variant/80 font-body-md text-body-md max-w-md">
+                    The world's first AI-powered reputation infrastructure for decentralized ecosystems. Building trust through mathematical certainty.
+                </p>
+<p class="mt-8 text-on-surface-variant/60 font-label-sm text-label-sm">
+                    © 2024 ProofGenLayer. AI-Verified Reputation Infrastructure.
+                </p>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div>
+<h4 class="font-label-md text-on-surface mb-6">Resource</h4>
+<ul class="space-y-4">
+<li><a class="text-on-surface-variant/80 hover:text-primary hover:underline underline-offset-8 transition-all" href="#">Protocol</a></li>
+<li><a class="text-on-surface-variant/80 hover:text-primary hover:underline underline-offset-8 transition-all" href="#">Docs</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-md text-on-surface mb-6">Legal</h4>
+<ul class="space-y-4">
+<li><a class="text-on-surface-variant/80 hover:text-primary hover:underline underline-offset-8 transition-all" href="#">Security</a></li>
+<li><a class="text-on-surface-variant/80 hover:text-primary hover:underline underline-offset-8 transition-all" href="#">Governance</a></li>
+</ul>
+</div>
+</div>
+</div>
+</footer>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface/80 backdrop-blur-2xl border-t border-white/20 z-50 flex justify-around items-center py-3 px-2 shadow-[0_-4px_24px_rgba(0,0,0,0.04)] rounded-t-lg">
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 px-4 py-1.5 hover:bg-primary-container/10 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="text-label-sm font-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 px-4 py-1.5" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard_customize">dashboard_customize</span>
+<span class="text-label-sm font-label-sm">Dash</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container/30 text-on-primary-container rounded-xl px-4 py-1.5" href="#">
+<span class="material-symbols-outlined" data-icon="verified_user" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span class="text-label-sm font-label-sm">Verify</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 px-4 py-1.5" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="text-label-sm font-label-sm">Leader</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 px-4 py-1.5" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-label-sm font-label-sm">Profile</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions for score animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const scoreCircle = document.querySelector('circle.text-primary');
+            if(scoreCircle) {
+                // Animate to 92/100
+                setTimeout(() => {
+                    scoreCircle.style.strokeDashoffset = '21';
+                }, 300);
+            }
+
+            // Hover effect on glass cards
+            const cards = document.querySelectorAll('.glass-card');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
+                });
+            });
+        });
+    </script>
+</body></html>
