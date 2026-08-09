@@ -209,6 +209,62 @@ class ContractService {
     window.dispatchEvent(new Event("walletChanged"));
   }
 
+  // MetaMask & GenLayer Studionet connection helper (Rule R21-R23)
+  async connectMetaMask() {
+    if (!window.ethereum) {
+      alert("MetaMask extension not found! Please install MetaMask to connect to GenLayer Studionet.");
+      return null;
+    }
+
+    try {
+      // 1. Request account access (Rule R21 - real user wallet)
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      if (!accounts || accounts.length === 0) return null;
+      
+      const userAddress = accounts[0];
+
+      // 2. Switch/Add GenLayer Studionet network (Rule R23)
+      const studionetChainId = '0x1f4'; // Chain ID 500 in hex
+      try {
+        await window.ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: studionetChainId }],
+        });
+      } catch (switchError) {
+        // Chain 4902 or -32603 indicates chain has not been added to MetaMask
+        if (switchError.code === 4902 || switchError.code === -32603) {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_addEthereumChain',
+              params: [
+                {
+                  chainId: studionetChainId,
+                  chainName: 'GenLayer Studionet',
+                  nativeCurrency: {
+                    name: 'GEN',
+                    symbol: 'GEN',
+                    decimals: 18,
+                  },
+                  rpcUrls: ['https://studio.genlayer.com/api'],
+                  blockExplorerUrls: ['https://genlayer-explorer.vercel.app'],
+                },
+              ],
+            });
+          } catch (addError) {
+            console.warn("Could not add GenLayer Studionet network to MetaMask:", addError);
+          }
+        }
+      }
+
+      // Connect wallet in application state
+      this.connectWallet(userAddress);
+      return userAddress;
+    } catch (err) {
+      console.error("MetaMask connection failed:", err);
+      return null;
+    }
+  }
+
   // --- CONTRACT METHODS (matching proof_of_reputation.py) ---
 
   // Write Method

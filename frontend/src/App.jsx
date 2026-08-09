@@ -232,19 +232,39 @@ function App() {
             </button>
           </nav>
 
-          <div className="flex items-center gap-3 bg-surface-container/50 border border-white/5 px-4 py-2 rounded-full max-w-full">
-            <span className="material-symbols-outlined text-secondary text-lg">account_balance_wallet</span>
-            <select 
-              value={currentWallet} 
-              onChange={handleWalletChange}
-              className="bg-transparent text-xs text-on-surface font-mono focus:outline-none cursor-pointer w-44"
+          <div className="flex items-center gap-3 flex-wrap justify-center">
+            <button 
+              onClick={async () => {
+                const addr = await ContractService.connectMetaMask();
+                if (addr) {
+                  setCurrentWallet(addr);
+                }
+              }}
+              className="bg-primary/20 border border-primary/40 hover:bg-primary/30 text-primary px-3 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5"
             >
-              {AVAILABLE_WALLETS.map(w => (
-                <option key={w.address} value={w.address} className="bg-surface-container text-on-surface">
-                  {w.label}: {w.address.slice(0,6)}...{w.address.slice(-4)}
-                </option>
-              ))}
-            </select>
+              <span className="material-symbols-outlined text-sm">account_balance_wallet</span>
+              Connect MetaMask
+            </button>
+            
+            <div className="flex items-center gap-2 bg-surface-container/50 border border-white/5 px-3 py-1.5 rounded-full max-w-full">
+              <span className="text-[10px] text-on-surface-variant uppercase font-bold">Sim Account:</span>
+              <select 
+                value={currentWallet} 
+                onChange={handleWalletChange}
+                className="bg-transparent text-xs text-on-surface font-mono focus:outline-none cursor-pointer w-40"
+              >
+                {AVAILABLE_WALLETS.map(w => (
+                  <option key={w.address} value={w.address} className="bg-surface-container text-on-surface">
+                    {w.label}: {w.address.slice(0,6)}...{w.address.slice(-4)}
+                  </option>
+                ))}
+                {!AVAILABLE_WALLETS.some(w => w.address.toLowerCase() === currentWallet.toLowerCase()) && (
+                  <option value={currentWallet} className="bg-surface-container text-on-surface">
+                    MetaMask: {currentWallet.slice(0,6)}...{currentWallet.slice(-4)}
+                  </option>
+                )}
+              </select>
+            </div>
           </div>
         </div>
       </header>
