@@ -19,13 +19,23 @@ If this platform were built using standard off-chain web servers or centralized 
 
 ---
 
-## 🚀 Deployment & Live Resources
+## Live App
 
-- **GenLayer Network**: Deployed to GenLayer studionet via GenLayer Studio
-- **Deployed Intelligent Contract Address**: `0x9d14942991aF4ca901170990134e3Fa7AfDbCBEc`
-- **GenLayer Explorer**: [https://genlayer-explorer.vercel.app](https://genlayer-explorer.vercel.app)
-- **Live Frontend dApp**: [https://proofgenlayer.vercel.app](https://proofgenlayer.vercel.app)
-- **GitHub Repository**: [https://github.com/nhattung99/proofgenlayer](https://github.com/nhattung99/proofgenlayer)
+- **Primary Live dApp**: [https://frontend-eta-wheat-72.vercel.app](https://frontend-eta-wheat-72.vercel.app)
+- **Vercel Alias**: [https://proofgenlayer.vercel.app](https://proofgenlayer.vercel.app)
+
+---
+
+## Deployed Contract
+
+- **Contract Address (studionet)**: `0xCd44E5C4cdf8572aD03354b88ce9299E0465D484`
+- **GenLayer Explorer**: [https://genlayer-explorer.vercel.app/address/0xCd44E5C4cdf8572aD03354b88ce9299E0465D484](https://genlayer-explorer.vercel.app/address/0xCd44E5C4cdf8572aD03354b88ce9299E0465D484)
+
+---
+
+## 🚀 GitHub Repository
+
+- **Public Repository**: [https://github.com/nhattung99/proofgenlayer](https://github.com/nhattung99/proofgenlayer)
 
 ---
 

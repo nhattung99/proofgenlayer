@@ -135,7 +135,7 @@ const PREPOPULATED_PROPOSALS = [
 
 class ContractService {
   constructor() {
-    this.contractAddress = import.meta.env.VITE_CONTRACT_ADDRESS || "0x9d14942991aF4ca901170990134e3Fa7AfDbCBEc";
+    this.contractAddress = import.meta.env.VITE_CONTRACT_ADDRESS || "0xCd44E5C4cdf8572aD03354b88ce9299E0465D484";
     console.log("Proof-of-Reputation DAO GenLayer Contract Address:", this.contractAddress);
     
     // Check if there is data in localStorage, otherwise initialize with prepopulated datasets
