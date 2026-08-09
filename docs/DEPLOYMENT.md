@@ -1,63 +1,67 @@
 # GenLayer Deployment Guide — Proof-of-Reputation DAO
 
-This guide explains how to compile, deploy, and verify the **Proof-of-Reputation DAO** Intelligent Contract on GenLayer.
+This guide explains how to compile, deploy, and test the **Proof-of-Reputation DAO** Intelligent Contract on GenLayer studionet using GenLayer Studio.
 
 ---
 
 ## Prerequisites
 
-1. Access to the [GenLayer Studio](https://studio.genlayer.com).
-2. A Web3 wallet browser extension (optional, as GenLayer Studio provides simulated accounts).
-3. The contract files located in `/contracts`:
-   - `proof_of_reputation_min.py` (Phase 1)
-   - `proof_of_reputation.py` (Phase 2 & 3)
+1. Open [GenLayer Studio](https://studio.genlayer.com).
+2. Ensure your account in the Studio **Accounts** panel has GEN funds allocated. Click **Get GEN** / Faucet if needed to fund your account before triggering transactions.
+3. Access contract files located in `contracts/`:
+   - `proof_of_reputation_min.py` (Phase 1: Minimal Baseline)
+   - `proof_of_reputation.py` (Phase 2 & 3: Full AI Audit & DAO Contract)
 
 ---
 
-## Step-by-Step Deployment Instructions
+## Pre-Deployment Setup & Cleanup
+
+Before compiling or deploying a new version of the contract:
+1. Open GenLayer Studio.
+2. In the **Storage** panel, click **Reset Storage** and perform a hard refresh (`Ctrl + Shift + R` or `Cmd + Shift + R`) to clear cached state schemas.
+3. Ensure no old contract sessions are hanging.
+
+---
+
+## Deployment Steps
 
 ### Phase 1: Deploying the Minimal Contract
 
-We deploy the minimal contract first to confirm that the GenLayer compiler and compiler parsers successfully read the storage collections.
+We deploy the minimal baseline contract first to confirm environment compatibility:
 
 1. Open **GenLayer Studio**.
-2. Create a new file named `proof_of_reputation_min.py` in the Studio workspace.
-3. Copy the contents of [proof_of_reputation_min.py](file:///C:/DEV%20Panda/proofgenlayer/contracts/proof_of_reputation_min.py) and paste it into the editor.
-4. Click **Compile**. Ensure that the compiler output returns `SUCCESS` and no parser warnings occur.
-5. Go to the **Deploy** panel.
-6. Click **Deploy Contract**. The transaction will execute and return the deployed contract address.
-7. Interact with the methods in the console:
-   - Call `register_profile` with test arguments.
-   - Call `get_profile` to verify storage retention.
+2. Create a new contract file named `proof_of_reputation_min.py`.
+3. Copy the exact code from `contracts/proof_of_reputation_min.py` and paste it into the Studio editor.
+4. Click **Compile**. Confirm that the compiler returns **SUCCESS**.
+5. Go to the **Deploy** panel and click **Deploy Contract**.
+6. Execute test methods:
+   - Call `register_profile` with test credentials.
+   - Call `get_users` and `get_profile` to verify state storage.
 
 ---
 
 ### Phase 2 & 3: Deploying the Full AI-Enhanced Contract
 
-Once the environment compatibility is confirmed:
+Once Phase 1 is validated:
 
-1. Create a new file in GenLayer Studio named `proof_of_reputation.py`.
-2. Copy the contents of [proof_of_reputation.py](file:///C:/DEV%20Panda/proofgenlayer/contracts/proof_of_reputation.py) and paste it into the editor.
-3. Click **Compile**.
-4. Go to the **Deploy** panel and deploy the contract.
-5. In the deployed contract UI:
-   - **Step A**: Call `register_profile` with a username and your social handles.
-   - **Step B**: Call `analyze_profile_reputation` passing the registered user address. This triggers the validator nodes to fetch the profiles, request LLM evaluations, perform consensus verification, and write the final scores on-chain.
-   - **Step C**: Call `get_reputation_score` and `get_reputation_report` to verify the AI outputs.
-   - **Step D**: Call `endorse_user_skill` from another test account address to vouch for the developer.
+1. Create a new contract file named `proof_of_reputation.py`.
+2. Copy the full code from `contracts/proof_of_reputation.py` and paste it into the Studio editor.
+3. Click **Compile**. Confirm **SUCCESS**.
+4. Click **Deploy Contract**. Record the returned **Contract Address**.
+5. Testing contract functions in Studio:
+   - **Step A (`register_profile`)**: Call `register_profile` with username, GitHub URL, LinkedIn, Twitter, Portfolio, and Bio.
+   - **Step B (`analyze_profile_reputation`)**: Pass the registered user address. The simulator will run the `leader_fn`, execute `gl.nondet.web.render` and `gl.nondet.exec_prompt`, run consensus validation via `validator_fn`, and record verified scores on-chain.
+   - **Step C (Read Scores & Memo)**: Call `get_reputation_score`, `get_reputation_report`, and `get_badges`.
+   - **Step D (`endorse_user_skill`)**: Switch to a second account address in Studio, register a profile, and endorse the first user's skill.
+   - **Step E (`create_proposal` & `vote_proposal`)**: Create a proposal and vote with reputation-weighted power.
 
 ---
 
-## Troubleshooting Studio Compilation Errors
+## Troubleshooting Checklist
 
-- **Error: "Contract Queues/IdlenessPhase/RevealingPhase not found"**
-  - *Cause*: The magic depends comment line at the top was missed or altered.
-  - *Solution*: Ensure the first two lines of your file match Rule 1 exactly:
-    ```python
-    # v0.2.16
-    # { "Depends": "py-genlayer:1jb45aa8ynh2a9c9xn3b7qqh8sm5q93hwfp7jqmwsfhh8jpz09h6" }
-    ```
+- **"Could not load contract schema"**:
+  - Ensure `gl.message.sender_address` is **never** called inside `__init__`.
+  - Ensure `# { "Depends": "py-genlayer:1jb45aa8ynh2a9c9xn3b7qqh8sm5q93hwfp7jqmwsfhh8jpz09h6" }` is present on line 2 with no extra blank lines above.
 
-- **Error: "TreeMap or DynArray not allocated"**
-  - *Cause*: Reassigning collections in `__init__` (e.g. `self.users = TreeMap()`).
-  - *Solution*: Remove any reassignment from the constructor. Let GenVM handle auto-initialization from the class declarations.
+- **"TreeMap or DynArray not allocated"**:
+  - Ensure persistent collection fields are declared as class annotations (`user_profiles: TreeMap[str, str]`) and never reassigned in `__init__`.
